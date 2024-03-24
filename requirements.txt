@@ -5,3 +5,4 @@ streamlit==1.4.0
 youtube-transcript-api==0.4.1
 protobuf<3.19.0
 altair==4.1.0
+click==8.0.0
