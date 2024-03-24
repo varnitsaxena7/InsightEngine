@@ -377,7 +377,7 @@ if selected=="Document Summarizer":
         
         uploaded_file = st.file_uploader("Upload your document", type=['txt', 'pdf'])
         
-            if uploaded_file is not None:
+        if uploaded_file is not None:
                 document = uploaded_file.read().decode('utf-8')
         
                 if st.button("Summarize"):
