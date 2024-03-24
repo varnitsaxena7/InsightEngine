@@ -44,22 +44,22 @@ def sentiment_analysis(text):
     sentiment_scores = sid.polarity_scores(text)
     return sentiment_scores
 
-import speech_recognition as sr
-import streamlit as st
-def recognize_speech():
-    recognizer = sr.Recognizer()
-    with sr.Microphone() as source:
-        st.write("Listening...")
-        recognizer.adjust_for_ambient_noise(source, duration=1)
-        audio_data = recognizer.listen(source)
-    try:
-        st.write("Processing...")
-        text = recognizer.recognize_google(audio_data)
-        return text
-    except sr.UnknownValueError:
-        st.write("Sorry, I could not understand what you said.")
-    except sr.RequestError:
-        st.write("Sorry, the service is unavailable.")
+#import speech_recognition as sr
+#import streamlit as st
+#def recognize_speech():
+   # recognizer = sr.Recognizer()
+   # with sr.Microphone() as source:
+    #    st.write("Listening...")
+     #   recognizer.adjust_for_ambient_noise(source, duration=1)
+     #   audio_data = recognizer.listen(source)
+  #  try:
+     #   st.write("Processing...")
+     #   text = recognizer.recognize_google(audio_data)
+     #   return text
+   # except sr.UnknownValueError:
+   #     st.write("Sorry, I could not understand what you said.")
+   # except sr.RequestError:
+       # st.write("Sorry, the service is unavailable.")
 
 
 import streamlit as st
