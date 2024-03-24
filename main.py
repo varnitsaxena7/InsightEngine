@@ -351,7 +351,7 @@ if selected=="Youtube Transcriber":
 if selected=="Document Summarizer":
         import re
         from collections import Counter
-        
+        import chardet
         # Function to preprocess the text
         def preprocess_text(text):
             text = re.sub(r'\s+', ' ', text)  # Remove extra white spaces
@@ -378,7 +378,13 @@ if selected=="Document Summarizer":
         uploaded_file = st.file_uploader("Upload your document", type=['txt', 'pdf'])
         
         if uploaded_file is not None:
-                document = uploaded_file.read().decode('utf-8')
+                file_contents = uploaded_file.getvalue()
+
+                # Detect the encoding of the file
+                encoding = chardet.detect(file_contents)['encoding']
+        
+                # Decode the file contents using the detected encoding
+                document = file_contents.decode(encoding)
         
                 if st.button("Summarize"):
                     # Check if the document is not empty
