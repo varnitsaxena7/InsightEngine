@@ -372,10 +372,10 @@ if selected=="Document Summarizer":
             sorted_sentences = sorted(sentence_scores, key=sentence_scores.get, reverse=True)
             summary = " ".join(sorted_sentences[:num_sentences_summary])
             return summary
-            st.title("Document Summarizer 📄")
-            st.write("Summarize your document quickly and efficiently!")
+        st.title("Document Summarizer 📄")
+        st.write("Summarize your document quickly and efficiently!")
         
-            uploaded_file = st.file_uploader("Upload your document", type=['txt', 'pdf'])
+        uploaded_file = st.file_uploader("Upload your document", type=['txt', 'pdf'])
         
             if uploaded_file is not None:
                 document = uploaded_file.read().decode('utf-8')
