@@ -3,3 +3,4 @@ Pillow
 google-generativeai
 nltk
 youtube-transcript-api
+googletrans==4.0.0-rc1
