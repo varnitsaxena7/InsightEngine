@@ -5,5 +5,5 @@ pydantic
 typing-extensions
 proto-plus<2.0.0dev,>=1.22.3
 google-generativeai==0.4.0
-protobuf<3.19.0
+protobuf>=3.19.0,<3.20.0
 streamlit==1.4.0
