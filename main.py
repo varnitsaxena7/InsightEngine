@@ -381,7 +381,7 @@ if selected=="Document Summarizer":
                 file_contents = uploaded_file.getvalue()
 
                 # Detect the encoding of the file
-                encoding = chardet.detect(file_contents)['encoding']
+                detected_encoding = chardet.detect(file_contents)['encoding']
         
                 # Decode the file contents using the detected encoding
                 default_encoding = 'utf-8'
