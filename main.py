@@ -167,31 +167,31 @@ if selected == 'Sentiment Analysis':  # Add this option in the dropdown menu
             st.write(suggestions)
 
 
-from gemini_utility import recognize_speech
-from googletrans import Translator
-import base64
-if selected == 'Voice Interaction':
-    def download_file(content, filename):
-                b64 = base64.b64encode(content.encode()).decode()
-                href = f'<a href="data:file/txt;base64,{b64}" download="{filename}">Download {filename}</a>'
-                return href
-    st.title("🎙️ VoiceBuddy")
-    st.write("Press the button and speak to interact.")
-    if "cost" not in st.session_state:
-        st.session_state.cost = ""
-    if st.button("Start Recording"):
+#from gemini_utility import recognize_speech
+#from googletrans import Translator
+#import base64
+#if selected == 'Voice Interaction':
+ #   def download_file(content, filename):
+#                b64 = base64.b64encode(content.encode()).decode()
+ #               href = f'<a href="data:file/txt;base64,{b64}" download="{filename}">Download {filename}</a>'
+  #              return href
+  #  st.title("🎙️ VoiceBuddy")
+  #  st.write("Press the button and speak to interact.")
+  #  if "cost" not in st.session_state:
+  #      st.session_state.cost = ""
+ #   if st.button("Start Recording"):
         # Record voice input
-        user_voice_input = recognize_speech()
-        st.write("You said:", user_voice_input)
-        if user_voice_input:
-            st.session_state.cost += "\n" + user_voice_input
-    with st.form("Result"):
-        result = st.text_area("Transcribed Text", value=st.session_state.cost )
-        st.markdown(download_file(st.session_state.cost, "transcribe.txt"), unsafe_allow_html=True)
+   #     user_voice_input = recognize_speech()
+   #     st.write("You said:", user_voice_input)
+   #    if user_voice_input:
+    #        st.session_state.cost += "\n" + user_voice_input
+    #with st.form("Result"):
+    #    result = st.text_area("Transcribed Text", value=st.session_state.cost )
+    #    st.markdown(download_file(st.session_state.cost, "transcribe.txt"), unsafe_allow_html=True)
         
-        submit_button = st.form_submit_button("Continue by clicking Start Recording")
-        if submit_button:
-           st.session_state.cost += " " + recognize_speech() 
+     #   submit_button = st.form_submit_button("Continue by clicking Start Recording")
+       # if submit_button:
+       #    st.session_state.cost += " " + recognize_speech() 
 
 
 
