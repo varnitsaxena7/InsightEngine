@@ -384,7 +384,10 @@ if selected=="Document Summarizer":
                 encoding = chardet.detect(file_contents)['encoding']
         
                 # Decode the file contents using the detected encoding
-                document = file_contents.decode(encoding)
+                default_encoding = 'utf-8'
+        
+                # Decode the file contents using the detected encoding or the default encoding
+                document = file_contents.decode(detected_encoding or default_encoding)
         
                 if st.button("Summarize"):
                     # Check if the document is not empty
