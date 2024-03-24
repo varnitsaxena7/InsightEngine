@@ -349,33 +349,43 @@ if selected=="Youtube Transcriber":
                     st.warning("Please enter a YouTube video URL.")
                     
 if selected=="Document Summarizer":
-     st.title("Document Summarizer 📄")
-     st.write("Summarize your document quickly and efficiently!")
-     import spacy
-        # Text input for user to enter document
-     document = st.text_area("Enter your document here")
-
-        # Button to trigger summarization
-     if st.button("Summarize"):
-            # Process the document using spaCy
-            nlp = spacy.load("en_core_web_sm")
-            doc = nlp(document)
-
-            # Calculate sentence importance scores based on TextRank algorithm
-            # Summarization by extracting the most important sentences
-            sentence_scores = {}
-            for sent in doc.sents:
-                sentence_scores[sent] = sum([token.rank for token in sent if not token.is_stop])
-
-            # Sort sentences by importance score in descending order
+        import re
+        from collections import Counter
+        
+        # Function to preprocess the text
+        def preprocess_text(text):
+            text = re.sub(r'\s+', ' ', text)  # Remove extra white spaces
+            text = re.sub(r'[^\w\s]', '', text)  # Remove punctuation marks
+            return text
+        
+        # Function to calculate sentence scores
+        def calculate_sentence_scores(document):
+            sentences = document.split('. ')
+            preprocessed_sentences = [preprocess_text(sent) for sent in sentences]
+            word_counts = [Counter(sent.split()) for sent in preprocessed_sentences]
+            sentence_scores = [sum(count.values()) for count in word_counts]
+            return dict(zip(sentences, sentence_scores))
+        
+        # Function to summarize the document
+        def summarize_document(document, num_sentences_summary=5):
+            sentence_scores = calculate_sentence_scores(document)
             sorted_sentences = sorted(sentence_scores, key=sentence_scores.get, reverse=True)
-
-            # Number of sentences in the summarized version
-            num_sentences_summary = min(len(sorted_sentences), 5)  # Set the number of sentences in the summary
-
-            # Generate the summary
-            summary = " ".join([str(sent) for sent in sorted_sentences[:num_sentences_summary]])
-
-            # Display summarized text
-            st.subheader("Summary:")
-            st.write(summary)
+            summary = " ".join(sorted_sentences[:num_sentences_summary])
+            return summary
+            st.title("Document Summarizer 📄")
+            st.write("Summarize your document quickly and efficiently!")
+        
+            uploaded_file = st.file_uploader("Upload your document", type=['txt', 'pdf'])
+        
+            if uploaded_file is not None:
+                document = uploaded_file.read().decode('utf-8')
+        
+                if st.button("Summarize"):
+                    # Check if the document is not empty
+                    if document.strip() == "":
+                        st.error("Please upload a valid document.")
+                    else:
+                        # Summarize the document
+                        summary = summarize_document(document)
+                        st.subheader("Summary:")
+                        st.write(summary)
