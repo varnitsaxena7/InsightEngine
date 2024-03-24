@@ -375,7 +375,7 @@ if selected=="Document Summarizer":
         st.title("Document Summarizer 📄")
         st.write("Summarize your document quickly and efficiently!")
         
-        uploaded_file = st.file_uploader("Upload your document", type=['txt', 'pdf'])
+        uploaded_file = st.file_uploader("Upload your document", type=['txt'])
         
         if uploaded_file is not None:
                 file_contents = uploaded_file.getvalue()
