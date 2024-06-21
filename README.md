@@ -30,7 +30,8 @@ Run the Streamlit app: streamlit run app.py
 
 Open your browser and navigate to http://localhost:8501 to view the application.
 
-Technologies Used
+## Technologies Used
+
 Streamlit: Front-end framework for building interactive web applications.
 
 NLTK: Natural Language Toolkit for sentiment analysis.
