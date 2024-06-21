@@ -21,7 +21,6 @@ Check out the live demo [here](https://insightengine.onrender.com/).
 To run this project locally, follow these steps:
 
 Clone the repository: git clone https://github.com/varnitsaxena7/InsightEngine.git
-                      cd InsightEngine
                       
 Install dependencies: pip install -r requirements.txt
 
