@@ -22,7 +22,7 @@ st.set_page_config(
 st.title("InsightEngine 💡")
 selected = st.sidebar.selectbox(
     'Select Feature',
-    ['ChatBot', 'Image Captioning', 'Embed text', 'Ask me anything','Sentiment Analysis','Language Translation','Topic Modeling','Youtube Transcriber','Document Summarizer'],
+    ['ChatBot', 'Image Captioning', 'Embed text', 'Ask me anything','Sentiment Analysis','Language Translation','Youtube Transcriber','Document Summarizer'],
     index=0
 
 )
