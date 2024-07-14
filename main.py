@@ -5,7 +5,7 @@ import time
 import json
 import base64
 from gemini_utility import (load_gemini_pro_model, gemini_pro_response, gemini_pro_vision_response, embeddings_model_response)
-
+working_dir = os.path.dirname(os.path.abspath(__file__))
 def translate_role_for_streamlit(user_role):
     if user_role == "model":
         return "assistant"
@@ -27,33 +27,32 @@ selected = st.sidebar.selectbox(
 
 )
             
-# chatbot page
 if selected == 'ChatBot':
-        model = load_gemini_pro_model()
+    model = load_gemini_pro_model()
 
-# Initialize chat session in Streamlit if not already present
-        if "chat_session" not in st.session_state:
-            st.session_state.chat_session = model.start_chat(history=[])
+    # Initialize chat session in Streamlit if not already present
+    if "chat_session" not in st.session_state:  # Renamed for clarity
+        st.session_state.chat_session = model.start_chat(history=[])
 
-        # Display the chatbot's title on the page
-        st.title("🤖 TalkBuddy")
+    # Display the chatbot's title on the page
+    st.title("🤖 ChatBot")
 
-        # Input field for user's message
-        user_prompt = st.text_input("Ask InsightEngine...")
+    
+    for message in st.session_state.chat_session.history:
+        with st.chat_message(translate_role_for_streamlit(message.role)):
+            st.markdown(message.parts[0].text)
 
-        # Button to generate a response
-        if st.button("Generate Response"):
-            if user_prompt:
-                # Add user's message to chat and display it
-                st.write("You: " + user_prompt)
+    
+    user_prompt = st.chat_input("Ask")
+    if user_prompt:
+        
+        st.chat_message("user").markdown(user_prompt)
 
-                # Send user's message to Gemini-Pro and get the response
-                gemini_response = st.session_state.chat_session.send_message(user_prompt)
+        gemini_response = st.session_state.chat_session.send_message(user_prompt) 
 
-                # Display Gemini-Pro's response
-                st.write("Assistant: " + gemini_response.text)
-                st.session_state.chat_session.history.append(gemini_response)
-
+       
+        with st.chat_message("assistant"):
+            st.markdown(gemini_response.text)
 
 # Image captioning page
 if selected == "Image Captioning":
