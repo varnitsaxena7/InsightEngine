@@ -26,10 +26,6 @@ selected = st.sidebar.selectbox(
     index=0
 
 )
-chat_history = []
-def clear_chat():
-            global chat_history
-            chat_history.clear()
             
 # chatbot page
 if selected == 'ChatBot':
@@ -58,10 +54,6 @@ if selected == 'ChatBot':
                 st.write("Assistant: " + gemini_response.text)
                 st.session_state.chat_session.history.append(gemini_response)
 
-        # Option to clear chat history
-        if st.button("Clear Chat History"):
-                clear_chat()
-                st.write("Chat history cleared.")
 
 # Image captioning page
 if selected == "Image Captioning":
