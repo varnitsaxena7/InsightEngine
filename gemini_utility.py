@@ -9,11 +9,9 @@ from youtube_transcript_api import YouTubeTranscriptApi
 
 # --- Setup ---
 
-# Use absolute path based on the script location for config file
 working_dir = os.path.dirname(os.path.abspath(__file__))
 config_file_path = os.path.join(working_dir, "config.json")
 
-# Load config safely with error handling
 try:
     with open(config_file_path, 'r') as f:
         config_data = json.load(f)
@@ -30,38 +28,30 @@ genai.configure(api_key=GOOGLE_API_KEY)
 
 # --- Gemini Models ---
 
-def load_gemini_pro_model():
-    return genai.GenerativeModel("gemini-pro")
+def load_text_bison_model():
+    # Updated model name from "gemini-pro" to "models/text-bison-001"
+    return genai.GenerativeModel("models/text-bison-001")
 
-def gemini_pro_vision_response(prompt, image):
+def text_bison_response(prompt):
     """
-    Generate response from Gemini Pro Vision model.
-
-    Args:
-        prompt (str): Text prompt
-        image (PIL.Image or str): Image or image path
-
-    Returns:
-        str: Generated response text
+    Generate text response from text-bison model.
     """
-    gemini_pro_vision_model = genai.GenerativeModel("gemini-pro-vision")
-
-    # If image is a path, load it as PIL Image
-    if isinstance(image, str):
-        image = Image.open(image)
-
-    response = gemini_pro_vision_model.generate_content([prompt, image])
+    model = load_text_bison_model()
+    response = model.send_message(prompt)  # use send_message for chat style
     return response.text
+
+# Vision model usage (if available) — placeholder example:
+# def gemini_vision_response(prompt, image):
+#     # NOTE: Replace 'models/vision-bison-001' with the correct model if available
+#     model = genai.GenerativeModel("models/vision-bison-001")
+#     if isinstance(image, str):
+#         image = Image.open(image)
+#     response = model.generate_content([prompt, image])
+#     return response.text
 
 def embeddings_model_response(input_text):
     """
     Generate embeddings from Gemini embeddings model.
-
-    Args:
-        input_text (str): Text to embed
-
-    Returns:
-        list[float]: Embedding vector
     """
     embedding_model = "models/embedding-001"
     embedding = genai.embed_content(
@@ -71,54 +61,18 @@ def embeddings_model_response(input_text):
     )
     return embedding["embedding"]
 
-def gemini_pro_response(user_prompt):
-    """
-    Generate text response from Gemini Pro.
-
-    Args:
-        user_prompt (str): Prompt text
-
-    Returns:
-        str: Generated text response
-    """
-    gemini_pro_model = genai.GenerativeModel("gemini-pro")
-    response = gemini_pro_model.generate_content(user_prompt)
-    return response.text
-
 # --- Sentiment Analysis ---
 
-# Download VADER lexicon only once
 nltk.download('vader_lexicon', quiet=True)
 sid = SentimentIntensityAnalyzer()
 
 def sentiment_analysis(text):
-    """
-    Analyze sentiment of input text.
-
-    Args:
-        text (str): Input text
-
-    Returns:
-        dict: Sentiment scores with keys 'neg', 'neu', 'pos', 'compound'
-    """
     return sid.polarity_scores(text)
 
 # --- YouTube Transcript Handling ---
 
 def transcribe_video(video_url, language='en', paragraph_length=300):
-    """
-    Fetch and split YouTube video transcript into paragraphs.
-
-    Args:
-        video_url (str): Full YouTube video URL
-        language (str): Language code (default 'en')
-        paragraph_length (int): Max chars per paragraph
-
-    Returns:
-        tuple[list[str], str] or (None, None): List of paragraphs and full transcript text
-    """
     try:
-        # Extract video ID (handle both full URLs and short URLs)
         if "v=" in video_url:
             video_id = video_url.split('v=')[-1].split('&')[0]
         elif "youtu.be/" in video_url:
@@ -136,12 +90,6 @@ def transcribe_video(video_url, language='en', paragraph_length=300):
         return None, None
 
 def display_paragraphs(paragraphs):
-    """
-    Display transcript paragraphs in Streamlit.
-
-    Args:
-        paragraphs (list[str]): List of transcript paragraphs
-    """
     for i, paragraph in enumerate(paragraphs):
         st.markdown(f"**Paragraph {i+1}:**")
         st.write(paragraph)
